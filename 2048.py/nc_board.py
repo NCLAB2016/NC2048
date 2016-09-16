@@ -3,7 +3,7 @@ import nc_cell
 import random
 
 
-class NCBoard(object):
+class NCBoard:
 
     """ Author: LIAO
     Date: 2016.9.16
@@ -55,7 +55,8 @@ class NCBoard(object):
         # Random Select One Cell Set to 2/4
         row = random.randint(0, self.NC_NUM_CELL_COL-1)
         col = random.randint(0, self.NC_NUM_CELL_ROW-1)
-        self.nc_cells[row][col].change_digit(self.tur, random.randint(1, 2)*2)
+#        self.nc_cells[row][col].change_digit(self.tur, random.randint(1, 2)*2)
+        self.nc_cells[row][col].change_digit(self.tur, 65536)
 
     def draw_board(self):
         for i in range(-self.NC_NUM_CELL_COL / 2, self.NC_NUM_CELL_COL / 2 + 1):
