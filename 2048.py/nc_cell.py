@@ -59,3 +59,28 @@ class NCCell:
         tur.end_fill()
         tur.pendown()
 
+    def remove_color(self, tur):
+        """ Remove color on current cell, set digit to 0 """
+        tur.fillcolor('#000000')
+        tur.penup()
+        tur.setheading(0)
+        tur.setpos(self.nc_x, self.nc_y)
+        tur.begin_fill()
+        for i in range(0, 4):
+            tur.forward(nc_board.NCBoard.NC_CELL_SIZE)
+            tur.right(90)
+        tur.end_fill()
+        tur.pendown()
+        self.nc_digit = 0
+        self.draw_rect(tur)
+
+    def draw_rect(self, tur):
+        """ Draw the border of this cell """
+        tur.penup()
+        tur.color("white")
+        tur.setheading(0)
+        tur.setpos(self.nc_x, self.nc_y)
+        tur.pendown()
+        for i in range(0, 4):
+            tur.forward(nc_board.NCBoard.NC_CELL_SIZE)
+            tur.right(90)

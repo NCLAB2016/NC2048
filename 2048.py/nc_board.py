@@ -53,10 +53,22 @@ class NCBoard:
                                                      0)
 
         # Random Select One Cell Set to 2/4
-        row = random.randint(0, self.NC_NUM_CELL_COL-1)
-        col = random.randint(0, self.NC_NUM_CELL_ROW-1)
-#        self.nc_cells[row][col].change_digit(self.tur, random.randint(1, 2)*2)
-        self.nc_cells[row][col].change_digit(self.tur, 65536)
+        self.occur_new_digit()
+
+    def occur_new_digit(self):
+        """ Occur a new digit in current board, the digit is 2 or 4,
+        the position is randomly selected """
+        empty_cells = []
+        for i in range(0, self.NC_NUM_CELL_ROW):
+            for j in range(0, self.NC_NUM_CELL_COL):
+                if self.nc_cells[i][j].nc_digit == 0:
+                    empty_cells.append(self.nc_cells[i][j])
+        if len(empty_cells) == 0:   # no empty space
+            return False
+        sel = random.randint(0, len(empty_cells)-1)
+        empty_cells[sel].change_digit(self.tur, random.randint(1, 2) * 2)
+        del empty_cells
+        return True
 
     def draw_board(self):
         for i in range(-self.NC_NUM_CELL_COL / 2, self.NC_NUM_CELL_COL / 2 + 1):
@@ -74,7 +86,53 @@ class NCBoard:
             self.tur.forward(self.NC_NUM_CELL_COL * self.NC_CELL_SIZE)
 
     def on_key_up(self):
-        pass
+        """ Press the Up Key Move All Can Move to Up """
+        all_moved = False   # flag mark if there exists cell moved
+        for col in range(0, self.NC_NUM_CELL_COL):
+            while True:
+                moved = False
+                for i in range(0, self.NC_NUM_CELL_ROW):
+                    if self.nc_cells[i][col].nc_digit != 0:
+                        moved = self.moved_to_direction(i, col, 1)
+                if not moved:
+                    break
+                else:
+                    all_moved = True
+        if all_moved:   # if exists moved, occurred a new cell randomly
+            res = self.occur_new_digit()
+            if not res: # Game Over
+                raise BaseException("Game Over!")
+
+    def moved_to_direction(self, i, j, direction):
+        """ Move cell to certain direction, merge or replace empty place """
+        digit = self.nc_cells[i][j].nc_digit    # my digit
+
+        if direction == 0:  # move right
+            pass
+        elif direction == 1:    # move up
+            find_row = -1
+            for row in range(i-1, -1, -1):
+                if self.nc_cells[row][j].nc_digit == 0: # find empty place
+                    find_row = row
+                elif self.nc_cells[row][j].nc_digit == digit:   # find can merge
+                    find_row = row
+                    # merge digit
+                    self.nc_cells[i][j].remove_color(self.tur)
+                    self.nc_cells[row][j].change_digit(self.tur, digit*2)
+                else:   # find can not merge
+                    break
+            if find_row == -1:  # can not find an empty place or not merge
+                return False
+            elif find_row != self.nc_cells[i][j].nc_digit:  # empty place
+                self.nc_cells[i][j].remove_color(self.tur)
+                self.nc_cells[find_row][j].change_digit(self.tur, digit)
+            return True
+        elif direction == 2:    # move left
+            pass
+        elif direction == 3:    # move down
+            pass
+        else:
+            raise ValueError("Unknown direction!")
 
     def on_key_down(self):
         pass
