@@ -15,7 +15,7 @@ public class NCCell extends JLabel{
     public static final HashMap<Integer, Color> cellColors = new HashMap(); // cell color map
 
     {
-        cellColors.put(0, new Color(189, 195, 199));
+        cellColors.put(0, this.getBackground());
         cellColors.put(2, new Color(230, 126, 34));
         cellColors.put(4, new Color(211, 84, 0));
         cellColors.put(8, new Color(231, 76, 60));
@@ -57,8 +57,8 @@ public class NCCell extends JLabel{
         if (null == c) // Error
             JOptionPane.showMessageDialog(null, "Error", "Oh, it is impossible!", JOptionPane.ERROR_MESSAGE);
         this.setBackground(c);
-        if (digit == 0) this.setText("");   // do not display zero
         this.setText(""+digit);
+        if (digit == 0) this.setText("");   // do not display zero
         this.setFont(new Font(Font.SANS_SERIF, Font.BOLD, digitSizes[String.valueOf(digit).length()]));
     }
 }
