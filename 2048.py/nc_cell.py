@@ -31,17 +31,19 @@ class NCCell:
         self.nc_label = None    # label in frame to show digit
         self.nc_x_offset = nc_board.NCBoard.NC_CELL_SIZE / 2  # x offset of digit relative to top-left point in cell
         self.nc_y_offset = -nc_board.NCBoard.NC_CELL_SIZE   # y offset of digit relative to top-left point in cell
+        self.nc_add_y_offset = {1: 0, 2: 0, 3: nc_board.NCBoard.NC_CELL_SIZE/6,
+                                4: nc_board.NCBoard.NC_CELL_SIZE/4,
+                                5: nc_board.NCBoard.NC_CELL_SIZE/4}   # additional y offset depend on length of digit
 
     def change_digit(self, tur, digit):
+        # type: (Turtle, int) -> object
         """ Change the digit in this cell, draw on cell and fill color in the same time """
         self.nc_digit = digit
-        print("POS: (" + str(self.nc_row) + ", " + str(self.nc_col) + ") : " + str(self.nc_digit))
-        print(str(self.nc_x) + ", " + str(self.nc_y))
         # fill color in cell
         self.fill_color(tur)
         # write digit to cell
         tur.penup()
-        tur.setpos(self.nc_x+self.nc_x_offset, self.nc_y+self.nc_y_offset)
+        tur.setpos(self.nc_x+self.nc_x_offset, self.nc_y+self.nc_y_offset+self.nc_add_y_offset[len(str(digit))])
         tur.pendown()
         tur.write(str(digit), align="center", font=("Arial", self.SIZE_PER_LEN[len(str(digit))], "normal"))
 
@@ -52,12 +54,12 @@ class NCCell:
         tur.penup()
         tur.setheading(0)
         tur.setpos(self.nc_x, self.nc_y)
+        tur.pendown()
         tur.begin_fill()
         for i in range(0, 4):
             tur.forward(nc_board.NCBoard.NC_CELL_SIZE)
             tur.right(90)
         tur.end_fill()
-        tur.pendown()
 
     def remove_color(self, tur):
         """ Remove color on current cell, set digit to 0 """
