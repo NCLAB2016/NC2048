@@ -62,3 +62,7 @@ Linux：
 * QQ: 346950981
 * email: [@LIAO](mailto:346950981@qq.com):stuck_out_tongue:
 
+
+<div class="footer">
+    Copyright&copy; 2016 NCLAB
+</div>
