@@ -1,7 +1,28 @@
 # NC2048
 Game 2048 using different programming languages
 
-## 1. 2048.py V1.0:unamused:
+## :round_pushpin:2048.java V1.1:heart_eyes:
+Swing实现2048，小巧快速
+
+### Run - Need [JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
+*下载[发布版Jar](/2048.java/2048.jar)，右键使用JRE运行，或者命令行：*
+```java
+  java -jar 2048.jar
+```
+
+### 优势
+快！比下面的Python海龟绘图版本要快非常多:unamused:
+
+### 截图:new_moon_with_face:
+
+
+![2048.java](/ScreentShot-2048.java.png)
+
+
+***
+
+
+## :round_pushpin:2048.py V1.0:poop:
 使用Python turtle完成绘图，纯Python标准库实现全部游戏逻辑
 
 ### Run - Need [Python 2.7](https://www.python.org/downloads/release/python-2712/)
@@ -11,16 +32,11 @@ Game 2048 using different programming languages
 ```
 
 ### 截图:new_moon_with_face:
-Windows：
+
+[Windows](/ScreentShot-2048.py-win.png)
 
 
-![Windows](/ScreentShot-2048.py-win.png)
-
-
-Linux：
-
-
-![Linux](/Screenshot-2048.py - NCLAB.png)
+[Linux](/Screenshot-2048.py - NCLAB.png)
 
 
 ###更新日志:expressionless:
