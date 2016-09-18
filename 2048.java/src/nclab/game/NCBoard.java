@@ -17,7 +17,7 @@ public class NCBoard extends JFrame {
 
     public static final int NC_NUM_ROW = 4; // number of rows of board
     public static final int NC_NUM_COL = 4; // number of columns of board
-    public static final int NC_CELL_SIZE = 150; // size of cell
+    public static final int NC_CELL_SIZE = 100; // size of cell
     public static final int INF = 1000000;
 
     // Directions
@@ -31,16 +31,17 @@ public class NCBoard extends JFrame {
 
     private NCCell[][] cells;
 
-    public NCBoard() {
+    public NCBoard(ImageIcon icon) {
 
         help();
 
+        this.setIconImage(icon.getImage());
         this.setSize(NC_CELL_SIZE * NC_NUM_ROW, NC_CELL_SIZE * NC_NUM_COL);  // set window size
         this.setLocationRelativeTo(null);  // set position on center of screen
         this.setTitle("2048.java - NCLAB");
         this.setLayout(new GridLayout(NC_NUM_ROW, NC_NUM_COL));
         this.setResizable(false);
-        this.setBackground(new Color(189, 195, 199));
+        this.setBackground(Color.BLACK);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  // set do nothing on close
 
         // add key listener
@@ -214,6 +215,9 @@ public class NCBoard extends JFrame {
                     if (cells[row][j].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[row][j].setDigit(digit << 1);   // multiply 2
+                        if (cells[row][j].getDigit() >= 2048)
+                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                                    JOptionPane.INFORMATION_MESSAGE);
                         return true;
                     }
                     if (cells[row][j].isEmpty())    // find empty cell
@@ -231,6 +235,9 @@ public class NCBoard extends JFrame {
                     if (cells[row][j].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[row][j].setDigit(digit << 1);   // multiply 2
+                        if (cells[row][j].getDigit() >= 2048)
+                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                                    JOptionPane.INFORMATION_MESSAGE);
                         return true;
                     }
                     if (cells[row][j].isEmpty())    // find empty cell
@@ -248,6 +255,9 @@ public class NCBoard extends JFrame {
                     if (cells[i][col].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[i][col].setDigit(digit << 1);   // multiply 2
+                        if (cells[i][col].getDigit() >= 2048)
+                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                                    JOptionPane.INFORMATION_MESSAGE);
                         return true;
                     }
                     if (cells[i][col].isEmpty())    // find empty cell
@@ -265,6 +275,9 @@ public class NCBoard extends JFrame {
                     if (cells[i][col].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[i][col].setDigit(digit << 1);   // multiply 2
+                        if (cells[i][col].getDigit() >= 2048)
+                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                                    JOptionPane.INFORMATION_MESSAGE);
                         return true;
                     }
                     if (cells[i][col].isEmpty())    // find empty cell
