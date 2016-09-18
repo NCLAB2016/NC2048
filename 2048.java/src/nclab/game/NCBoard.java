@@ -17,8 +17,7 @@ public class NCBoard extends JFrame {
 
     public static final int NC_NUM_ROW = 4; // number of rows of board
     public static final int NC_NUM_COL = 4; // number of columns of board
-    public static final int NC_WINDOW_WIDTH = 800;
-    public static final int NC_WINDOW_HEIGHT = 800;
+    public static final int NC_CELL_SIZE = 150; // size of cell
     public static final int INF = 1000000;
 
     // Directions
@@ -27,25 +26,39 @@ public class NCBoard extends JFrame {
     public static final int LEFT = 2;
     public static final int DOWN = 3;
 
+    // simple lock
+    public boolean lock = false;
+
     private NCCell[][] cells;
 
     public NCBoard() {
 
-        this.setSize(NC_WINDOW_WIDTH, NC_WINDOW_HEIGHT);  // set window size
+        help();
+
+        this.setSize(NC_CELL_SIZE * NC_NUM_ROW, NC_CELL_SIZE * NC_NUM_COL);  // set window size
         this.setLocationRelativeTo(null);  // set position on center of screen
         this.setTitle("2048.java - NCLAB");
         this.setLayout(new GridLayout(NC_NUM_ROW, NC_NUM_COL));
         this.setResizable(false);
         this.setBackground(new Color(189, 195, 199));
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  // set do nothing on close
 
         // add key listener
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if (lock) return;
+                lock = true;
                 if (e.getKeyCode() == KeyEvent.VK_Q){   // quit
                     quit();
                 }
-                if (e.getKeyCode() == KeyEvent.VK_UP)  // up
+                if (e.getKeyCode() == KeyEvent.VK_R){   // restart
+                    restart();
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_H) { // help
+                    help();
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_UP)  // up
                 {
                     moveCells(UP);
                 }
@@ -61,6 +74,7 @@ public class NCBoard extends JFrame {
                 {
                     moveCells(RIGHT);
                 }
+                lock = false;
             }
         });
 
@@ -85,9 +99,34 @@ public class NCBoard extends JFrame {
 
     }
 
+    /**
+     * Show Help Message
+     */
+    private  void help() {
+        JOptionPane.showMessageDialog(null, "Up/Down/Left/Right - Control Move\n" +
+                "Q - Quit\nR - Restart\nH - Help\nhttps://github.com/NCLAB2016/",
+                "Help", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Restart the Game
+     */
+    private void restart() {
+        int res = JOptionPane.showConfirmDialog(null, "Sure to Restart? O(^_^)O", "Restart",
+                JOptionPane.YES_NO_OPTION);
+        if (res == JOptionPane.YES_OPTION) _restart();
+    }
+
+    private void _restart() {
+        for (int i = 0; i < NC_NUM_ROW; ++i)
+            for (int j = 0; j < NC_NUM_COL; ++j)
+                cells[i][j].setDigit(0);
+        occurDigit();
+    }
+
     private void quit() {
-        int res = JOptionPane.showConfirmDialog(null, "Quit",
-                "Sure to leave me? :(", JOptionPane.YES_NO_OPTION);
+        int res = JOptionPane.showConfirmDialog(null, "Sure to leave me? :(",
+                "Quit", JOptionPane.YES_NO_OPTION);
         if (res == JOptionPane.YES_OPTION) System.exit(0);
     }
 
@@ -147,10 +186,10 @@ public class NCBoard extends JFrame {
                 }
                 break;
             default:    // Error
-                JOptionPane.showMessageDialog(null, "Error", "Oh, it is impossible!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Oh, it is impossible!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         if (allMoved) occurDigit(); // select new cell to occur digit
-        if (isGameOver()) JOptionPane.showMessageDialog(null, "Thank you", "Game Over!",
+        if (isGameOver()) JOptionPane.showMessageDialog(null, "Game Over!", "Thank you",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -239,7 +278,7 @@ public class NCBoard extends JFrame {
                 cells[i][emptyPos].setDigit(digit);
                 return true;
             default:    // Error
-                JOptionPane.showMessageDialog(null, "Error", "Oh, it is impossible!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Oh, it is impossible!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -253,7 +292,7 @@ public class NCBoard extends JFrame {
             for (int j = 0; j < NC_NUM_COL; ++j)
                 if (cells[i][j].isEmpty()) list.add(cells[i][j]);
         if (list.isEmpty())
-            JOptionPane.showMessageDialog(null, "Error", "Oh, it is impossible!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Oh, it is impossible!", "Error", JOptionPane.ERROR_MESSAGE);
 
         // randomly select an empty cell
         int sel = (int)(Math.random() * INF) % (list.size());

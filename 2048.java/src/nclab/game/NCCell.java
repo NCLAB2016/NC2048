@@ -11,11 +11,11 @@ import java.util.HashMap;
  */
 public class NCCell extends JLabel{
 
-    public static final int[] digitSizes = {0, 200, 150, 110, 80, 60};   // font size depend on length of digit
+    public static final int[] digitSizes = {0, 170, 130, 80, 60, 50};   // font size depend on length of digit
     public static final HashMap<Integer, Color> cellColors = new HashMap(); // cell color map
 
     {
-        cellColors.put(0, this.getBackground());
+        cellColors.put(0, new Color(189, 195, 199));
         cellColors.put(2, new Color(230, 126, 34));
         cellColors.put(4, new Color(211, 84, 0));
         cellColors.put(8, new Color(231, 76, 60));
@@ -38,6 +38,7 @@ public class NCCell extends JLabel{
 
     public NCCell(){
         this.setBorder(new LineBorder(Color.BLACK, 2));
+        this.setBackground(new Color(189, 195, 199));
         this.setOpaque(true);   // background color is enable only set opaque
         this.setHorizontalAlignment(JLabel.CENTER); // text display in center of label
         digit = 0;
@@ -60,5 +61,8 @@ public class NCCell extends JLabel{
         this.setText(""+digit);
         if (digit == 0) this.setText("");   // do not display zero
         this.setFont(new Font(Font.SANS_SERIF, Font.BOLD, digitSizes[String.valueOf(digit).length()]));
+        if (digit >= 2048)
+            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                    JOptionPane.INFORMATION_MESSAGE);
     }
 }
