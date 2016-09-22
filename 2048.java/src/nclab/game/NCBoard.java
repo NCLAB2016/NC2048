@@ -1,13 +1,15 @@
 package nclab.game;
 
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Game board which size is Height x Width
@@ -27,7 +29,15 @@ public class NCBoard extends JFrame {
     public static final int DOWN = 3;
 
     // simple lock
-    public boolean lock = false;
+    private boolean lock = false;
+
+    // time of game starting
+    private long startTime;
+
+    // time constant
+    public static final int MILLISECONDS_PER_HOUR = 3600000;
+    public static final int MILLISECONDS_PER_MINUTE = 60000;
+    public static final int MILLISECONDS_PER_SECOND = 1000;
 
     private NCCell[][] cells;
 
@@ -98,6 +108,24 @@ public class NCBoard extends JFrame {
         // random select one cell to occur digit 2/4
         occurDigit();
 
+        // update start time
+        startTime = Calendar.getInstance().getTimeInMillis();
+
+        // show timer in title
+        Timer t = new Timer(true);  // set daemon
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                long escapeTime = (Calendar.getInstance().getTimeInMillis() - startTime);
+                int hours = (int)(escapeTime / MILLISECONDS_PER_HOUR);
+                escapeTime = escapeTime % MILLISECONDS_PER_HOUR;
+                int minutes = (int)(escapeTime / MILLISECONDS_PER_MINUTE);
+                escapeTime = escapeTime % MILLISECONDS_PER_MINUTE;
+                int seconds = (int)(escapeTime / MILLISECONDS_PER_SECOND);
+                String time = String.format("2048.java - NCLAB %02d:%02d:%02d", hours, minutes, seconds);
+                NCBoard.this.setTitle(time);
+            }
+        }, 0, 1000);
     }
 
     /**
@@ -123,6 +151,9 @@ public class NCBoard extends JFrame {
             for (int j = 0; j < NC_NUM_COL; ++j)
                 cells[i][j].setDigit(0);
         occurDigit();
+
+        // update start time
+        startTime = Calendar.getInstance().getTimeInMillis();
     }
 
     private void quit() {
@@ -215,9 +246,13 @@ public class NCBoard extends JFrame {
                     if (cells[row][j].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[row][j].setDigit(digit << 1);   // multiply 2
-                        if (cells[row][j].getDigit() >= 2048)
-                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                        if (cells[row][j].getDigit() >= 2048) {
+                            // calculate escape time
+                            String timeStr = calculateEscapeTime();
+                            JOptionPane.showMessageDialog(null, timeStr +
+                                            "\nunbelievable! Go On!", "Ohhhh",
                                     JOptionPane.INFORMATION_MESSAGE);
+                        }
                         return true;
                     }
                     if (cells[row][j].isEmpty())    // find empty cell
@@ -235,9 +270,13 @@ public class NCBoard extends JFrame {
                     if (cells[row][j].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[row][j].setDigit(digit << 1);   // multiply 2
-                        if (cells[row][j].getDigit() >= 2048)
-                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                        if (cells[row][j].getDigit() >= 2048) {
+                            // calculate escape time
+                            String timeStr = calculateEscapeTime();
+                            JOptionPane.showMessageDialog(null, timeStr +
+                                            "\nunbelievable! Go On!", "Ohhhh",
                                     JOptionPane.INFORMATION_MESSAGE);
+                        }
                         return true;
                     }
                     if (cells[row][j].isEmpty())    // find empty cell
@@ -255,9 +294,13 @@ public class NCBoard extends JFrame {
                     if (cells[i][col].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[i][col].setDigit(digit << 1);   // multiply 2
-                        if (cells[i][col].getDigit() >= 2048)
-                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                        if (cells[i][col].getDigit() >= 2048) {
+                            // calculate escape time
+                            String timeStr = calculateEscapeTime();
+                            JOptionPane.showMessageDialog(null, timeStr +
+                                            "\nunbelievable! Go On!", "Ohhhh",
                                     JOptionPane.INFORMATION_MESSAGE);
+                        }
                         return true;
                     }
                     if (cells[i][col].isEmpty())    // find empty cell
@@ -275,9 +318,13 @@ public class NCBoard extends JFrame {
                     if (cells[i][col].getDigit() == digit) {  // find can merge
                         cells[i][j].setDigit(0);
                         cells[i][col].setDigit(digit << 1);   // multiply 2
-                        if (cells[i][col].getDigit() >= 2048)
-                            JOptionPane.showMessageDialog(null, "unbelievable! Go On!", "Ohhhh",
+                        if (cells[i][col].getDigit() >= 2048) {
+                            // calculate escape time
+                            String timeStr = calculateEscapeTime();
+                            JOptionPane.showMessageDialog(null, timeStr +
+                                            "\nunbelievable! Go On!", "Ohhhh",
                                     JOptionPane.INFORMATION_MESSAGE);
+                        }
                         return true;
                     }
                     if (cells[i][col].isEmpty())    // find empty cell
@@ -294,6 +341,20 @@ public class NCBoard extends JFrame {
                 JOptionPane.showMessageDialog(null, "Oh, it is impossible!", "Error", JOptionPane.ERROR_MESSAGE);
         }
         return false;
+    }
+
+    private String calculateEscapeTime() {
+        long escapeTime = (Calendar.getInstance().getTimeInMillis() - startTime);
+        String timeStr;
+        int hours = (int)(escapeTime / MILLISECONDS_PER_HOUR);
+        escapeTime = escapeTime % MILLISECONDS_PER_HOUR;
+        int minutes = (int)(escapeTime / MILLISECONDS_PER_MINUTE);
+        escapeTime = escapeTime % MILLISECONDS_PER_MINUTE;
+        int seconds = (int)(escapeTime / MILLISECONDS_PER_SECOND);
+        escapeTime = escapeTime % MILLISECONDS_PER_SECOND;
+        timeStr = "Escape time: " + hours + " h " + minutes + " min " + seconds +
+                " s " + escapeTime + " ms";
+        return timeStr;
     }
 
     private void occurDigit() {

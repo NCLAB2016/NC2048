@@ -5,8 +5,8 @@ import javax.swing.*;
 public class Main {
 
     // icon
-    public static ImageIcon icon = new ImageIcon(Main.class.getResource("/icon.png"));
-    //public static ImageIcon icon = new ImageIcon("icon.png");
+    //public static ImageIcon icon = new ImageIcon(Main.class.getResource("/icon.png"));
+    public static ImageIcon icon = new ImageIcon("icon.png");
 
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
