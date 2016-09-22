@@ -1,6 +1,9 @@
 # NC2048
 Game 2048 using different programming languages
 
+## :round_pushpin:2048.java V1.2:heart_eyes:
+统计游戏时间，显示时间在Title     
+
 ## :round_pushpin:2048.java V1.1:heart_eyes:
 Swing实现2048，小巧快速
 
