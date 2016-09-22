@@ -8,7 +8,7 @@ Game 2048 using different programming languages
 Swing实现2048，小巧快速
 
 ### Run - Need [JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
-*下载[最新版](https://github.com/NCLAB2016/NC2048/releases/download/1.2/2048.jar)，右键使用JRE运行，或者命令行：*
+*下载[最新版](https://github.com/NCLAB2016/NC2048/releases/download/V1.2/2048.jar)，右键使用JRE运行，或者命令行：*
 ```java
   java -jar 2048.jar
 ```
